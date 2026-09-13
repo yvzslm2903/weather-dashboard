@@ -21,3 +21,31 @@ print()
 print("Erste 5 Zeiten:", data["hourly"]["time"][:5])
 print("Erste 5 Temperaturen:", data["hourly"]["temperature_2m"][:5])
 print("Anzahl Einträge:", len(data["hourly"]["time"]))
+
+
+zeiten = data["hourly"]["time"]
+temperaturen = data["hourly"]["temperature_2m"]
+
+for i in range(len(zeiten)):
+    print(zeiten[i], temperaturen[i])
+
+def parse_hourly(data):
+    zeiten = data["hourly"]["time"]
+    temperaturen = data["hourly"]["temperature_2m"]
+    niederschlag = data["hourly"]["precipitation"]
+    wind = data["hourly"]["wind_speed_10m"]
+
+    zeilen = []
+    for i in range(len(zeiten)):
+        eintrag = {
+            "time": zeiten[i],
+            "temperature": temperaturen[i],
+            "precipitation": niederschlag[i],
+            "wind_speed": wind[i],
+        }
+        zeilen.append(eintrag)
+    return zeilen
+
+zeilen = parse_hourly(data)
+print(zeilen[:3])
+print("Anzahl:", len(zeilen))
