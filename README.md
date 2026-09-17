@@ -10,7 +10,7 @@ Persönliches Lernprojekt neben dem Studium der Wirtschaftsinformatik.
 
 - Abruf stündlicher Prognosedaten (Temperatur, Niederschlag, Windgeschwindigkeit) über die Open-Meteo-API
 - Speicherung in SQLite mit Duplikatprüfung über den Zeitstempel
-- Drei separate Diagramme: Temperaturverlauf, stündlicher Niederschlag, Windgeschwindigkeit
+- Gemeinsames Liniendiagramm für Temperatur, Niederschlag und Windgeschwindigkeit
 - Filter für den angezeigten Prognosezeitraum (1, 3 oder 7 Tage)
 - Anzeige der aktuellen Werte für die laufende Stunde
 
@@ -87,9 +87,12 @@ Die Open-Meteo-API liefert die Daten spaltenweise: eine Liste mit allen Zeitstem
 
 Da sich die Prognosezeiträume bei wiederholtem Abruf überschneiden, würden Einträge ohne Vorkehrung mehrfach gespeichert. Die Spalte `time` ist deshalb als `unique` definiert, zusätzlich prüft `save_records()` vor dem Einfügen, ob der Zeitstempel bereits vorhanden ist. Die Funktion gibt die Anzahl tatsächlich neu gespeicherter Datensätze zurück, wodurch sich ein wiederholter Lauf leicht kontrollieren lässt.
 
-**Drei Diagramme statt einem**
+**Bekannte Einschränkung der Darstellung**
 
-Temperatur, Niederschlag und Wind liegen in völlig unterschiedlichen Größenordnungen, etwa 17 °C gegenüber 0,2 mm Niederschlag. Auf einer gemeinsamen Achse wäre der Niederschlag als flache Linie am unteren Rand nicht mehr ablesbar. Die Werte werden deshalb in drei getrennten Diagrammen dargestellt, jeweils mit eigener Skalierung. Der Niederschlag wird als Balkendiagramm gezeichnet, da es sich um Summen je Stunde handelt und nicht um einen kontinuierlichen Verlauf.
+Alle drei Messwerte liegen derzeit in einem gemeinsamen Diagramm. Da sie sich in
+der Größenordnung deutlich unterscheiden, etwa 17 °C gegenüber 0,2 mm Niederschlag,
+ist der Niederschlag auf der gemeinsamen Achse kaum ablesbar. Eine Aufteilung in
+separate Diagramme mit eigener Skalierung ist als nächster Schritt vorgesehen.
 
 **Prognose statt Rückblick**
 
@@ -97,7 +100,7 @@ Der Zeitraumfilter arbeitet vorwärts, zeigt also die kommenden Tage. Grund ist 
 
 **Aufbereitung im Backend**
 
-Die Umwandlung der Datensätze in die von Chart.js erwarteten Listen geschieht in der Flask-Route, nicht im Template. Die Übergabe ans Frontend erfolgt über den Jinja2-Filter `tojson`, der gültiges JSON erzeugt und Sonderzeichen korrekt maskiert. Im Template erzeugt eine gemeinsame Hilfsfunktion alle drei Diagramme, statt den Konfigurationsblock dreimal zu wiederholen.
+Die Umwandlung der Datensätze in die von Chart.js erwarteten Listen geschieht in der Flask-Route, nicht im Template. Die Übergabe ans Frontend erfolgt über den Jinja2-Filter `tojson`, der gültiges JSON erzeugt und Sonderzeichen korrekt maskiert. 
 
 ## Mögliche Erweiterungen
 
