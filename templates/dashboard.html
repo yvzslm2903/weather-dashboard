@@ -29,6 +29,8 @@
     <script>
         const labels = {{ labels|tojson }};
         const temperaturen = {{ temperaturen|tojson }};
+        const niederschlag = {{ niederschlag|tojson }};
+        const wind = {{ wind|tojson }};
 
         new Chart(document.getElementById("tempChart"), {
             type: "line",
@@ -38,6 +40,16 @@
                     label: "Temperatur (°C)",
                     data: temperaturen,
                     borderColor: "#d9534f",
+                     tension: 0.3
+                }, {
+                    label: "Niederschlag (mm)",
+                    data: niederschlag,
+                    borderColor: "#0275d8",
+                    tension: 0.3
+                }, {
+                    label: "Wind (km/h)",
+                    data: wind,
+                    borderColor: "#5cb85c",
                     tension: 0.3
                 }]
             }

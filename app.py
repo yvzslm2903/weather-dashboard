@@ -18,6 +18,8 @@ def dashboard():
 
     labels = [r.time.strftime("%d.%m. %H:%M") for r in records]
     temperaturen = [r.temperature for r in records]
+    niederschlag = [r.precipitation for r in records]
+    wind = [r.wind_speed for r in records]
 
     aktuell = None
     for r in records:
@@ -28,6 +30,8 @@ def dashboard():
     return render_template("dashboard.html",
                            labels=labels,
                            temperaturen=temperaturen,
+                           niederschlag=niederschlag,
+                           wind=wind,
                            anzahl=len(records),
                            days=days)
 
