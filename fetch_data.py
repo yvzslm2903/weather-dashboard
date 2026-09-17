@@ -49,3 +49,31 @@ def parse_hourly(data):
 zeilen = parse_hourly(data)
 print(zeilen[:3])
 print("Anzahl:", len(zeilen))
+
+from datetime import datetime
+from models import WeatherRecord, Session, init_db
+
+def save_records(zeilen):
+    session = Session()
+    neu = 0
+    for zeile in zeilen:
+        zeitpunkt = datetime.fromisoformat(zeile["time"])
+        
+        vorhanden = session.query(WeatherRecord).filter_by(time=zeitpunkt).first()
+        if vorhanden is None:
+            eintrag = WeatherRecord(
+                time=zeitpunkt,
+                temperature=zeile["temperature"],
+                precipitation=zeile["precipitation"],
+                wind_speed=zeile["wind_speed"],
+            )
+            session.add(eintrag)
+            neu += 1
+
+    session.commit()
+    session.close()
+    return neu
+
+init_db()
+zeilen = parse_hourly(data)
+print("Neu gespeichert:", save_records(zeilen))
