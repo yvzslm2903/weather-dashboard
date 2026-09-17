@@ -7,7 +7,7 @@ params = {
     "longitude": 13.41,
     "hourly": "temperature_2m,precipitation,wind_speed_10m",
     "timezone": "Europe/Berlin",
-    "forecast_days": 2,
+    "forecast_days": 7,
 }
 
 response = requests.get(URL, params=params)
@@ -58,7 +58,7 @@ def save_records(zeilen):
     neu = 0
     for zeile in zeilen:
         zeitpunkt = datetime.fromisoformat(zeile["time"])
-        
+
         vorhanden = session.query(WeatherRecord).filter_by(time=zeitpunkt).first()
         if vorhanden is None:
             eintrag = WeatherRecord(
